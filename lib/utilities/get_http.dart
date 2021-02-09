@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:getx_flutter/config/constants.dart';
 import 'package:getx_flutter/models/api_response.dart';
 
-class GetxCall extends GetConnect {
+class GetHttp extends GetConnect {
   static Future<String> _getUrl(String apiName, List params) async {
     String _url = "";
     if (params.length > 0) {
@@ -71,15 +71,20 @@ class GetxCall extends GetConnect {
       return apiData;
     } else {
       String _url = AppConstants.apiUrl + apiName;
+      log("Requesting to $_url");
       try {
         GetHttpClient postm = GetHttpClient();
         final _response = await postm.post(_url, body: formData);
         if (_response.status.hasError && _response.statusCode != 200) {
-          apiData.message = _response.statusText;
+          log("request failed server error: ${_response.statusText}");
+          apiData.message = _response.statusText.contains("SocketException: OS Error")
+              ? "Unable to connect with server."
+              : _response.statusText;
           apiData.data = 0;
           apiData.isSuccess = false;
           return apiData;
         } else {
+          log("response from server : ${_response.body["Message"]}");
           apiData.message = _response.body["Message"];
           apiData.data = _response.body["Data"];
           apiData.isSuccess = _response.body["IsSuccess"];

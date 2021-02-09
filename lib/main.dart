@@ -3,7 +3,11 @@ import 'package:get/get.dart';
 import 'package:getx_flutter/config/themes.dart';
 import 'package:getx_flutter/router.dart';
 
-void main() => runApp(MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+};
 
 class MyApp extends StatelessWidget {
   @override

@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
             CircleAvatar(
               radius: 35,
               child: Icon(
-                FontAwesomeIcons.book,
+                FontAwesomeIcons.audible,
                 size: 30,
               ),
             ),

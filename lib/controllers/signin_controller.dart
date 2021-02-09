@@ -1,9 +1,8 @@
-import 'dart:developer';
-
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:getx_flutter/tools/getx_calls.dart';
-import 'package:getx_flutter/tools/widgetbox.dart';
+import 'package:get/get.dart';
+import 'package:getx_flutter/router.dart';
+import 'package:getx_flutter/utilities/get_http.dart';
+import 'package:getx_flutter/widgets/getsnackbar.dart';
 
 class SignInController extends GetxController {
   TextEditingController txtUsername = TextEditingController();
@@ -16,13 +15,13 @@ class SignInController extends GetxController {
   }
 
   void loginEvent() async {
-    List params = List();
-    String apiName = "https://api.covid19api.com";
+    var params = {"username": txtUsername.text, "password": txtPassword.text};
+    String apiName = "login";
+
     try {
-      var resData = await GetxCall.getMethod(apiName, params);
+      var resData = await GetHttp.postMethod(apiName, params);
       if (resData.isSuccess == true) {
-        log(resData.data.toString());
-        successSnack("Success", resData.message);
+        Get.toNamed(AppRouter.dashboardScreen);
       } else {
         alertSnack("Alert", resData.message);
       }
